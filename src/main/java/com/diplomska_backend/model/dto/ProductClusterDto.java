@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class ProductClusterDto {
-    private Long id;
+    private String id;
     private Category category;
     @JsonIgnoreProperties(value = {"productCluster"})
     private Product cheapestProduct;
+    private Integer numberOfResults;
 }

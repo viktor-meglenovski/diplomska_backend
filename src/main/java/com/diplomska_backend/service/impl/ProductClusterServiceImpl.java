@@ -65,11 +65,18 @@ public class ProductClusterServiceImpl implements ProductClusterService{
         return paginationInfo;
     }
 
+    @Override
+    public ProductCluster getById(String id) {
+        ProductCluster productCluster=productClusterRepository.findById(id).orElse(null);
+        return productCluster;
+    }
+
     private ProductClusterDto mapProductClusterToDto(ProductCluster productCluster){
         ProductClusterDto productClusterDto=new ProductClusterDto();
         productClusterDto.setId(productCluster.getId());
         productClusterDto.setCategory(productCluster.getCategory());
         productClusterDto.setCheapestProduct(productCluster.getCheapestProduct());
+        productClusterDto.setNumberOfResults(productCluster.getNumberOfResults());
         return productClusterDto;
     }
 }

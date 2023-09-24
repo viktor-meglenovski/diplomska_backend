@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductClusterRepository extends JpaRepository<ProductCluster,Long> {
+public interface ProductClusterRepository extends JpaRepository<ProductCluster,String> {
     List<ProductCluster> findAllByCategory(Category category);
     @Query("SELECT pc FROM ProductCluster pc JOIN pc.products p WHERE LOWER(p.name) LIKE %:text%")
     List<ProductCluster> findAllProductClustersContainingProductNameLike(String text);

@@ -1,5 +1,6 @@
 package com.diplomska_backend.model.dto;
 
+import com.diplomska_backend.model.enums.UserRole;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

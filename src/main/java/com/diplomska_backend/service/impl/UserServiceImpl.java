@@ -4,6 +4,7 @@ import com.diplomska_backend.model.dto.CredentialsDto;
 import com.diplomska_backend.model.dto.SignUpDto;
 import com.diplomska_backend.model.dto.UserDto;
 import com.diplomska_backend.model.entities.User;
+import com.diplomska_backend.model.enums.UserRole;
 import com.diplomska_backend.model.exceptions.AppException;
 import com.diplomska_backend.model.mappers.UserMapper;
 import com.diplomska_backend.repository.UserRepository;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.signUpToUser(userDto);
         user.setPassword(passwordEncoder.encode(CharBuffer.wrap(userDto.getPassword())));
-
+        user.setUserRole(UserRole.ROLE_USER);
         User savedUser = userRepository.save(user);
 
         return userMapper.toUserDto(savedUser);

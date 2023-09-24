@@ -2,6 +2,7 @@ package com.diplomska_backend.service;
 
 import com.diplomska_backend.model.dto.PaginationInfo;
 import com.diplomska_backend.model.dto.ProductClusterDto;
+import com.diplomska_backend.model.entities.ProductCluster;
 import com.diplomska_backend.model.enums.Category;
 import com.diplomska_backend.model.enums.Stores;
 import org.springframework.data.domain.Page;
@@ -15,4 +16,5 @@ public interface ProductClusterService {
     List<ProductClusterDto> getAllContainingProductFromStore(Stores store);
     List<ProductClusterDto> filterProductClusters(String name, Category category, Stores store, Long lowerPrice, Long upperPrice, Integer pageNumber);
     PaginationInfo getPaginationInfo(String name, Category category, Stores store, Long lowerPrice, Long upperPrice);
+    ProductCluster getById(String id);
 }

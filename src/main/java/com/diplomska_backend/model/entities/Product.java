@@ -1,15 +1,14 @@
 package com.diplomska_backend.model.entities;
 
+import com.diplomska_backend.model.enums.Category;
 import com.diplomska_backend.model.enums.Stores;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -32,14 +31,19 @@ public class Product {
 
     private String preprocessedName;
 
-    @JsonIgnore
-    @Column(name = "vectorized_name", columnDefinition = "jsonb")
-    private String vectorizedName;
+//    @JsonIgnore
+//    @Column(name = "vectorized_name", columnDefinition = "jsonb")
+//    private String vectorizedName;
 
     @Enumerated(value = EnumType.STRING)
     private Stores store;
 
-    @ManyToOne
+    @Enumerated(value = EnumType.STRING)
+    @Nullable
+    private Category category;
+
+    @ManyToOne(cascade = CascadeType.DETACH)
+    @JsonIgnore
     private ProductCluster productCluster;
 
     @JsonIgnoreProperties(value = {"product"})

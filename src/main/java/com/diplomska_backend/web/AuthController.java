@@ -5,6 +5,7 @@ import com.diplomska_backend.config.UserAuthenticationProvider;
 import com.diplomska_backend.model.dto.CredentialsDto;
 import com.diplomska_backend.model.dto.SignUpDto;
 import com.diplomska_backend.model.dto.UserDto;
+import com.diplomska_backend.model.enums.UserRole;
 import com.diplomska_backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

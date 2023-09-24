@@ -9,10 +9,7 @@ import com.diplomska_backend.service.ProductClusterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,5 +63,11 @@ public class ProductClusterController {
                                                                                       @RequestParam @Nullable Long upperPrice) {
         PaginationInfo paginationInfo = productClusterService.getPaginationInfo(name, category, store, lowerPrice, upperPrice);
         return ResponseEntity.ok(paginationInfo);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductCluster> getProductClusterById(@PathVariable String id){
+        ProductCluster response = productClusterService.getById(id);
+        return ResponseEntity.ok(response);
     }
 }

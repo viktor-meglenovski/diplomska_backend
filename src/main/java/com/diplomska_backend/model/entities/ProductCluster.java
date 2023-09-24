@@ -16,8 +16,7 @@ import java.util.List;
 @Entity
 public class ProductCluster {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
@@ -30,5 +29,9 @@ public class ProductCluster {
         return products.stream()
                 .min(Comparator.comparing(x -> x.getCurrentPrice().getPrice()))
                 .orElse(null);
+    }
+
+    public Integer getNumberOfResults(){
+        return products.size();
     }
 }

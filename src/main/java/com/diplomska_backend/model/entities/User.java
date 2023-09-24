@@ -1,5 +1,7 @@
 package com.diplomska_backend.model.entities;
 
+import com.diplomska_backend.model.enums.Stores;
+import com.diplomska_backend.model.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -34,4 +36,7 @@ public class User {
     @Column(nullable = false)
     @Size(max = 100)
     private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    private UserRole userRole;
 }

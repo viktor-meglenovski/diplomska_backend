@@ -32,6 +32,8 @@ public class Prediction {
 
     private Long nextPredictedPrice;
 
+    private Long nextActualPrice;
+
     @Enumerated(value = EnumType.STRING)
     private PredictionResult predictionResult;
 

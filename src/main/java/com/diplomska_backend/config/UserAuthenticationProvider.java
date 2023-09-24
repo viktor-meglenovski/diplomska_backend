@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.diplomska_backend.model.dto.UserDto;
+import com.diplomska_backend.model.entities.User;
 import com.diplomska_backend.service.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,19 @@ public class UserAuthenticationProvider {
     }
 
     public String createToken(String login) {
+        UserDto user = userService.findByLogin(login);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3600000); // 1 hour
+        Date validity = new Date(now.getTime() + 3600000*24*7);
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
                 .withIssuer(login)
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
+                .withClaim("user", user.getLogin())
+                .withClaim("firstName", user.getFirstName())
+                .withClaim("lastName", user.getLastName())
+                .withClaim("role",user.getUserRole().toString())
                 .sign(algorithm);
     }
 

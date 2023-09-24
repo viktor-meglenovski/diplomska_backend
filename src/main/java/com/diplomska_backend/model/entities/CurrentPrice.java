@@ -1,5 +1,6 @@
 package com.diplomska_backend.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
@@ -13,5 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class CurrentPrice extends Price {
     @OneToOne(mappedBy = "currentPrice")
+    @JsonIgnore
     private Product product;
 }
