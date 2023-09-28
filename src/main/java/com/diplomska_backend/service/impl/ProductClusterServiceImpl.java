@@ -2,6 +2,8 @@ package com.diplomska_backend.service.impl;
 
 import com.diplomska_backend.model.dto.PaginationInfo;
 import com.diplomska_backend.model.dto.ProductClusterDto;
+import com.diplomska_backend.model.dto.ProductDto;
+import com.diplomska_backend.model.entities.Product;
 import com.diplomska_backend.model.entities.ProductCluster;
 import com.diplomska_backend.model.enums.Category;
 import com.diplomska_backend.model.enums.Stores;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,16 +69,26 @@ public class ProductClusterServiceImpl implements ProductClusterService{
     }
 
     @Override
-    public ProductCluster getById(String id) {
-        ProductCluster productCluster=productClusterRepository.findById(id).orElse(null);
-        return productCluster;
+    public ProductClusterDto getById(String id) {
+        ProductCluster productCluster = productClusterRepository.findById(id).orElse(null);
+
+        if (productCluster != null) {
+            List<Product> products = productCluster.getProducts();
+            products.sort(Comparator.comparingLong(p -> p.getCurrentPrice().getPrice()));
+            productCluster.setProducts(products);
+        }
+        ProductClusterDto productClusterDto = mapProductClusterToDto(productCluster);
+        return productClusterDto;
     }
 
-    private ProductClusterDto mapProductClusterToDto(ProductCluster productCluster){
+    public static ProductClusterDto mapProductClusterToDto(ProductCluster productCluster){
         ProductClusterDto productClusterDto=new ProductClusterDto();
         productClusterDto.setId(productCluster.getId());
         productClusterDto.setCategory(productCluster.getCategory());
-        productClusterDto.setCheapestProduct(productCluster.getCheapestProduct());
+        List<ProductDto> products =productCluster.getProducts().stream()
+                                    .map(product -> ProductServiceImpl.mapProductToDto(product))
+                .collect(Collectors.toList());
+        productClusterDto.setProducts(products);
         productClusterDto.setNumberOfResults(productCluster.getNumberOfResults());
         return productClusterDto;
     }

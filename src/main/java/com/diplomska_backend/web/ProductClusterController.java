@@ -66,8 +66,8 @@ public class ProductClusterController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductCluster> getProductClusterById(@PathVariable String id){
-        ProductCluster response = productClusterService.getById(id);
+    public ResponseEntity<ProductClusterDto> getProductClusterById(@PathVariable String id){
+        ProductClusterDto response = productClusterService.getById(id);
         return ResponseEntity.ok(response);
     }
 }

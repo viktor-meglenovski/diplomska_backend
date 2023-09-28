@@ -34,9 +34,18 @@ public class Prediction {
 
     private Long nextActualPrice;
 
+    private Double predictedPercentage;
+
     @Enumerated(value = EnumType.STRING)
     private PredictionResult predictionResult;
 
     private Boolean predictionAccuracy;
+
+    private Boolean isPassed;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date evaluatedOn;
 
 }

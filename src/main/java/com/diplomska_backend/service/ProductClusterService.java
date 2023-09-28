@@ -16,5 +16,5 @@ public interface ProductClusterService {
     List<ProductClusterDto> getAllContainingProductFromStore(Stores store);
     List<ProductClusterDto> filterProductClusters(String name, Category category, Stores store, Long lowerPrice, Long upperPrice, Integer pageNumber);
     PaginationInfo getPaginationInfo(String name, Category category, Stores store, Long lowerPrice, Long upperPrice);
-    ProductCluster getById(String id);
+    ProductClusterDto getById(String id);
 }

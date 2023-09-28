@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -14,6 +16,6 @@ public class ProductClusterDto {
     private String id;
     private Category category;
     @JsonIgnoreProperties(value = {"productCluster"})
-    private Product cheapestProduct;
+    private List<ProductDto> products;
     private Integer numberOfResults;
 }
