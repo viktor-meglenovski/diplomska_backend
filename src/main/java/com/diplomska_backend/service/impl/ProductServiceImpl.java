@@ -1,15 +1,20 @@
 package com.diplomska_backend.service.impl;
 
+import com.diplomska_backend.model.dto.PaginationInfo;
 import com.diplomska_backend.model.dto.ProductClusterDto;
 import com.diplomska_backend.model.dto.ProductDto;
 import com.diplomska_backend.model.entities.*;
 import com.diplomska_backend.model.enums.Category;
 import com.diplomska_backend.model.enums.PredictionResult;
 import com.diplomska_backend.model.enums.Stores;
+import com.diplomska_backend.model.helpers.Constants;
 import com.diplomska_backend.repository.ProductRepository;
 import com.diplomska_backend.service.ProductService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -34,23 +39,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getExpectedUps() {
-        List<Product> products = productRepository.findAll();
-        List<ProductDto> productDtos = products.stream().map(x->mapProductToDto(x)).collect(Collectors.toList());
-        List<ProductDto> expectedUps = productDtos.stream()
-                .filter(x->x.getLatestPrediction() != null && x.getLatestPrediction().getPredictionResult()== PredictionResult.UP && x.getLatestPrediction().getIsPassed() == false)
+    public List<ProductDto> getExpected(PredictionResult type, Integer pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, Constants.EXPECTED_PAGESIZE);
+        Page<Product> products = productRepository.getExpected(type,pageable);
+        List<ProductDto> productDtos = products.stream()
+                .map(x->mapProductToDto(x))
+//                .sorted(Comparator.comparing(x->x.getLatestPrediction().getPredictedPercentage()))
                 .collect(Collectors.toList());
-        return expectedUps;
+        return productDtos;
     }
 
     @Override
-    public List<ProductDto> getExpectedDowns() {
-        List<Product> products = productRepository.findAll();
-        List<ProductDto> productDtos = products.stream().map(x->mapProductToDto(x)).collect(Collectors.toList());
-        List<ProductDto> expectedDowns = productDtos.stream()
-                .filter(x->x.getLatestPrediction() != null && x.getLatestPrediction().getPredictionResult()== PredictionResult.DOWN && x.getLatestPrediction().getIsPassed() == false)
-                .collect(Collectors.toList());
-        return expectedDowns;
+    public PaginationInfo getPaginationInfo(PredictionResult type) {
+        Integer numberOfResults = productRepository.getExpectedPaginationInfo(type);
+        PaginationInfo paginationInfo=new PaginationInfo(numberOfResults, Constants.EXPECTED_PAGESIZE);
+        return paginationInfo;
     }
 
     public static ProductDto mapProductToDto(Product product){

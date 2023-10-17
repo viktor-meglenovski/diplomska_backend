@@ -27,7 +27,12 @@ public class ProductClusterServiceImpl implements ProductClusterService{
     @Override
     public List<ProductClusterDto> getAll(Integer pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, Constants.PAGESIZE);
-        Page<ProductCluster> productClusters = productClusterRepository.findAll(pageable);
+        Page<ProductCluster> productClusters = productClusterRepository.filterProductClusters(null,null,null,null,null,pageable);
+        for(ProductCluster productCluster : productClusters){
+            List<Product> products = productCluster.getProducts();
+            products.sort(Comparator.comparingLong(p -> p.getCurrentPrice().getPrice()));
+            productCluster.setProducts(products);
+        }
         return productClusters.stream()
                 .map(productCluster -> mapProductClusterToDto(productCluster)).collect(Collectors.toList());
     }
@@ -57,6 +62,11 @@ public class ProductClusterServiceImpl implements ProductClusterService{
     public List<ProductClusterDto> filterProductClusters(String name, Category category, Stores store, Long lowerPrice, Long upperPrice, Integer pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, Constants.PAGESIZE);
         Page<ProductCluster> filteredProductClusters = productClusterRepository.filterProductClusters(name,category,store,lowerPrice,upperPrice,pageable);
+        for(ProductCluster productCluster : filteredProductClusters){
+            List<Product> products = productCluster.getProducts();
+            products.sort(Comparator.comparingLong(p -> p.getCurrentPrice().getPrice()));
+            productCluster.setProducts(products);
+        }
         return filteredProductClusters.stream()
                 .map(productCluster -> mapProductClusterToDto(productCluster)).collect(Collectors.toList());
     }
@@ -64,7 +74,7 @@ public class ProductClusterServiceImpl implements ProductClusterService{
     @Override
     public PaginationInfo getPaginationInfo(String name, Category category, Stores store, Long lowerPrice, Long upperPrice) {
         Integer numberOfFilteredResults = productClusterRepository.getPaginationInfoForFilteredClusters(name,category,store,lowerPrice,upperPrice);
-        PaginationInfo paginationInfo=new PaginationInfo(numberOfFilteredResults);
+        PaginationInfo paginationInfo=new PaginationInfo(numberOfFilteredResults, Constants.PAGESIZE);
         return paginationInfo;
     }
 

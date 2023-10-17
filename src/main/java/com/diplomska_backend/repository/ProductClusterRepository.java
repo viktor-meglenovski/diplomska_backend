@@ -27,7 +27,8 @@ public interface ProductClusterRepository extends JpaRepository<ProductCluster,S
             "AND (:category IS NULL OR pc.category = :category) " +
             "AND (:store IS NULL OR pr.store = :store) " +
             "AND (:lowerPrice IS NULL OR p.price >= :lowerPrice) " +
-            "AND (:upperPrice IS NULL OR p.price <= :upperPrice)")
+            "AND (:upperPrice IS NULL OR p.price <= :upperPrice)" +
+            "ORDER BY pc.id ASC")
     Page<ProductCluster> filterProductClusters(
             String name,
             Category category,
