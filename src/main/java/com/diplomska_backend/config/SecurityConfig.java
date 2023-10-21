@@ -31,8 +31,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/test").permitAll()
-                        .anyRequest().permitAll())
-                        //.anyRequest().authenticated())
+//                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
         ;
         return http.build();
     }
